@@ -6,15 +6,24 @@ from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-YOUR_DOMAIN = '121.4.107.137'
+YOUR_DOMAIN = 'http://121.4.107.137:8000/'
 
 import uuid
-stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+# stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+stripe.api_key = 'sk_test_Z0MbREXbYPkF4NOBEjUJheD7'
+
 stripe.client_id = "12313131"
 
 # If you are testing your webhook locally with the Stripe CLI you
 # can find the endpoint's secret by running `stripe listen`
 # Otherwise, find your endpoint's secret in your webhook settings in the Developer Dashboard
+endpoint = stripe.WebhookEndpoint.create(
+  url='https://example.com/my/webhook/endpoint',
+  enabled_events=[
+    'charge.failed',
+    'charge.succeeded',
+  ],
+)
 endpoint_secret = 'whsec_ay6CFgDIp6AshUNeypEvn8xvyRqrFNG5'
 
 
@@ -101,7 +110,7 @@ class StripeCallback(View):
 
         # Handle the event
         # type事件类型
-        if event.type == 'payment_intent.succeeded':
+        if event.type == 'charge.succeeded':
             # 支付费用成功，处理业务逻辑
             # 1 接收来自 stripe 的响应数据,对进行出来
             # 主要处理字段 metadata status amount id
