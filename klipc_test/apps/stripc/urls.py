@@ -6,9 +6,9 @@ router = DefaultRouter()
 
 urlpatterns = [
     # 支付请求接口
-    path('create-checkout-session/', views.StripeOrder.as_view()),
+    path('create-checkout-session/', views.CreateCheckoutSessionView.as_view()),
     # 支付回调接口
-    path('stripe_webhooks/', views.StripeCallback.as_view()),
+    path('stripe_webhooks/', views.stripe_webhook),
     # checkout html test url
     path('checkout/', views.CheckoutClike.as_view()),
     path('success/', views.Success.as_view()),
